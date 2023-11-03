@@ -1,1 +1,1 @@
-"# RippleDetectorUI" 
+# RippleDetectorUI
