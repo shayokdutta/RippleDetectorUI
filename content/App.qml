@@ -5,8 +5,8 @@ import QtQuick 6.5
 import RippleDetectorUI
 
 Window {
-    width: mainScreen.width
-    height: mainScreen.height
+    width: Constants.width
+    height: 800
 
     visible: true
     title: "RippleDetectorUI"
