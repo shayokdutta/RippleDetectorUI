@@ -14,7 +14,7 @@ import QtQuick.Layouts
 //import QtCharts 2.3
 Rectangle {
     id: rectangle
-    width: Constants.width
+    width: 600
     height: 800
     anchors.fill: parent
     color: "#ffffff"
@@ -264,7 +264,7 @@ Rectangle {
                                                     SpinBox {
                                                         id: spinBox_detectionThreshold
                                                         width: 100
-                                                        height: 15
+                                                        height: 10
                                                         opacity: 0.5
                                                         transformOrigin: Item.TopLeft
                                                         font.pointSize: 10
@@ -491,8 +491,9 @@ Rectangle {
                                                     Text {
                                                         id: text_specialStim
                                                         color: "#ffffff"
-                                                        text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:15pt;\">Special Stim Params</span></p></body></html>"
+                                                        text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:15pt;\">Special Stim Parameters</span></p></body></html>"
                                                         font.pixelSize: 10
+                                                        horizontalAlignment: Text.AlignHCenter
                                                         Layout.alignment: Qt.AlignHCenter
                                                                           | Qt.AlignVCenter
                                                         textFormat: Text.RichText
@@ -583,9 +584,9 @@ Rectangle {
                                                     Text {
                                                         id: text_numChans6
                                                         color: "#ffffff"
-                                                        text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Enable Long Ripple Detection</span></p></body></html>"
+                                                        text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Enable Long </span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Ripple Detection</span></p></body></html>"
                                                         font.pixelSize: 10
-                                                        rightPadding: 50
+                                                        rightPadding: 10
                                                         textFormat: Text.RichText
                                                     }
 
@@ -594,6 +595,7 @@ Rectangle {
                                                         color: "#ffffff"
                                                         text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Long Ripple Time </span></p>\n<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Thresh (ms)</span></p></body></html>"
                                                         font.pixelSize: 10
+                                                        Layout.fillWidth: false
                                                         textFormat: Text.RichText
                                                     }
 
@@ -648,6 +650,7 @@ Rectangle {
                                                 width: 200
                                                 height: 200
                                                 anchors.top: parent.top
+                                                baselineOffset: 5
                                                 Layout.fillHeight: false
                                                 topPadding: 5
                                                 padding: 0
@@ -668,6 +671,7 @@ Rectangle {
                                             Frame {
                                                 id: frame_connection
                                                 width: 200
+                                                Layout.fillHeight: false
                                                 //                                                height: 200
                                                 Layout.fillWidth: true
                                                 padding: 0
@@ -684,6 +688,7 @@ Rectangle {
                                                     TextField {
                                                         id: textField_address
                                                         text: "udp://192.168.x.x:xxxx"
+                                                        Layout.fillHeight: false
                                                         Layout.fillWidth: true
                                                         placeholderText: qsTr("udp://192.168.x.x:xxxx")
                                                         color: "white" // This sets the text color to white
@@ -698,9 +703,11 @@ Rectangle {
                                                     }
                                                     Text {
                                                         id: text_connectionStatus
-                                                        text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:18pt; color:#cc0000;\">Not Connected!</span></p></body></html>"
+                                                        text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt; color:#cc0000;\">Not Connected!</span></p></body></html>"
                                                         font.pixelSize: 12
-                                                        Layout.fillWidth: true
+                                                        Layout.alignment: Qt.AlignRight
+                                                                          | Qt.AlignVCenter
+                                                        Layout.fillWidth: false
                                                         textFormat: Text.RichText
                                                     }
                                                 }
@@ -710,6 +717,7 @@ Rectangle {
                                                 id: frame_testStim
                                                 width: 200
                                                 anchors.bottom: parent.bottom
+                                                Layout.fillHeight: false
                                                 Layout.fillWidth: true
 
                                                 RowLayout {
@@ -790,7 +798,7 @@ Rectangle {
 
                     Frame {
                         id: frame_rbf
-                        Layout.minimumHeight: 100
+                        Layout.minimumHeight: 75
                         padding: 5
                         Layout.fillWidth: true
                         Layout.fillHeight: true
@@ -859,7 +867,7 @@ Rectangle {
                         padding: 5
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        Layout.minimumHeight: 100
+                        Layout.minimumHeight: 75
 
                         ChartView {
                             id: line_envelope
