@@ -8,6 +8,7 @@ Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on
 import QtQuick 6.5
 import QtQuick.Controls 6.5
 import RippleDetectorUI
+import "../imports/RippleDetectorUI/"
 import QtCharts 2.6
 import QtQuick.Layouts
 
@@ -261,33 +262,15 @@ Rectangle {
                                                         textFormat: Text.RichText
                                                     }
 
-                                                    SpinBox {
+                                                    ShpinBox {
                                                         id: spinBox_detectionThreshold
-                                                        width: 100
-                                                        height: 10
-                                                        opacity: 0.5
+                                                        width: 80
                                                         transformOrigin: Item.TopLeft
-                                                        font.pointSize: 10
-                                                        font.bold: true
                                                         value: 3
-                                                        rightPadding: 0
-                                                        leftPadding: 0
-                                                        rightInset: 10000
-                                                        leftInset: 10000
-                                                        topInset: 0
+                                                        stepSize: 0.25
                                                         Layout.margins: 5
                                                         Layout.fillHeight: false
-                                                        to: 20
-                                                        stepSize: 0
                                                         Layout.fillWidth: true
-                                                        contentItem: Text {
-                                                            text: spinBox_detectionThreshold.value
-                                                            color: "white"
-                                                            horizontalAlignment: Text.AlignHCenter
-                                                            verticalAlignment: Text.AlignVCenter
-                                                            anchors.fill: parent
-                                                            font: spinBox_detectionThreshold.font
-                                                        }
                                                     }
 
                                                     Text {
@@ -302,29 +285,14 @@ Rectangle {
                                                         textFormat: Text.RichText
                                                     }
 
-                                                    SpinBox {
+                                                    ShpinBox {
                                                         id: spinBox_numChans
-                                                        width: 100
-                                                        height: 15
-                                                        opacity: 0.5
+                                                        width: 80
                                                         value: 1
-                                                        clip: false
-                                                        topInset: 50
-                                                        font.bold: true
-                                                        rightInset: 1000
-                                                        leftInset: 10000
                                                         stepSize: 1
                                                         Layout.margins: 5
                                                         Layout.fillWidth: true
                                                         Layout.fillHeight: false
-                                                        to: 10
-                                                        contentItem: Text {
-                                                            text: spinBox_numChans.value
-                                                            color: "white" // Set the font color to white
-                                                            font: spinBox_numChans.font
-                                                            horizontalAlignment: Text.AlignHCenter
-                                                            verticalAlignment: Text.AlignVCenter
-                                                        }
                                                     }
                                                 }
                                             }
@@ -352,33 +320,15 @@ Rectangle {
                                                         textFormat: Text.RichText
                                                     }
 
-                                                    SpinBox {
+                                                    ShpinBox {
                                                         id: spinBox_postStimBlock
                                                         width: 100
-                                                        height: 15
-                                                        opacity: 0.5
-                                                        scale: 1
-                                                        value: 200
-                                                        editable: false
-                                                        topInset: 50
-                                                        font.bold: true
+                                                        maximumValue: 1000.00
+                                                        value: 100
                                                         stepSize: 1
-                                                        rightInset: 1000
-                                                        leftInset: 10000
-                                                        clip: false
                                                         Layout.margins: 5
                                                         Layout.fillWidth: true
                                                         Layout.fillHeight: false
-                                                        to: 1000
-                                                        from: 200
-                                                        contentItem: Text {
-                                                            text: spinBox_postStimBlock.value
-                                                            color: "white"
-                                                            horizontalAlignment: Text.AlignHCenter
-                                                            verticalAlignment: Text.AlignVCenter
-                                                            anchors.fill: parent
-                                                            font: spinBox_postStimBlock.font
-                                                        }
                                                     }
 
                                                     Text {
@@ -389,29 +339,13 @@ Rectangle {
                                                         textFormat: Text.RichText
                                                     }
 
-                                                    SpinBox {
+                                                    ShpinBox {
                                                         id: spinBox_maxStimRate
                                                         width: 100
-                                                        height: 15
-                                                        opacity: 0.5
-                                                        topInset: 50
                                                         stepSize: 1
-                                                        font.bold: true
-                                                        rightInset: 1000
-                                                        leftInset: 10000
-                                                        clip: false
                                                         Layout.margins: 5
                                                         Layout.fillWidth: true
                                                         Layout.fillHeight: false
-                                                        to: 10
-                                                        contentItem: Text {
-                                                            text: spinBox_maxStimRate.value
-                                                            color: "white"
-                                                            horizontalAlignment: Text.AlignHCenter
-                                                            verticalAlignment: Text.AlignVCenter
-                                                            anchors.fill: parent
-                                                            font: spinBox_maxStimRate.font
-                                                        }
                                                     }
                                                 }
                                             }
@@ -532,30 +466,16 @@ Rectangle {
                                                         textFormat: Text.RichText
                                                     }
 
-                                                    SpinBox {
+                                                    ShpinBox {
                                                         id: spinBox_controlStim
                                                         width: 100
-                                                        height: 15
-                                                        font.bold: true
-                                                        opacity: 0.5
-                                                        topInset: 50
                                                         value: 200
+                                                        minimumValue: 200
+                                                        maximumValue: 1000
                                                         stepSize: 10
-                                                        rightInset: 1000
-                                                        leftInset: 10000
-                                                        clip: false
                                                         Layout.margins: 5
                                                         Layout.fillWidth: true
                                                         Layout.fillHeight: false
-                                                        to: 1000
-                                                        contentItem: Text {
-                                                            text: spinBox_controlStim.value
-                                                            color: "white"
-                                                            horizontalAlignment: Text.AlignHCenter
-                                                            verticalAlignment: Text.AlignVCenter
-                                                            anchors.fill: parent
-                                                            font: spinBox_controlStim.font
-                                                        }
                                                     }
                                                 }
                                             }
@@ -599,31 +519,16 @@ Rectangle {
                                                         textFormat: Text.RichText
                                                     }
 
-                                                    SpinBox {
+                                                    ShpinBox {
                                                         id: spinBox_LRD
                                                         width: 100
-                                                        height: 15
-                                                        opacity: 0.5
                                                         value: 10
-                                                        topInset: 50
+                                                        minimumValue: 5
+                                                        maximumValue: 50
                                                         stepSize: 1
-                                                        rightInset: 1000
-                                                        leftInset: 10000
-                                                        font.bold: true
-                                                        clip: false
                                                         Layout.margins: 5
                                                         Layout.fillWidth: true
                                                         Layout.fillHeight: false
-                                                        to: 30
-                                                        from: 5
-                                                        contentItem: Text {
-                                                            text: spinBox_LRD.value
-                                                            color: "white"
-                                                            horizontalAlignment: Text.AlignHCenter
-                                                            verticalAlignment: Text.AlignVCenter
-                                                            anchors.fill: parent
-                                                            font: spinBox_LRD.font
-                                                        }
                                                     }
                                                 }
                                             }
@@ -737,30 +642,16 @@ Rectangle {
                                                         Layout.fillWidth: false
                                                     }
 
-                                                    SpinBox {
+                                                    ShpinBox {
                                                         id: spinBox_stimPulse
                                                         width: 100
-                                                        height: 15
-                                                        opacity: 0.5
-                                                        font.bold: true
                                                         value: 60
-                                                        topInset: 50
                                                         stepSize: 5
-                                                        rightInset: 1000
-                                                        leftInset: 10000
-                                                        clip: false
+                                                        minimumValue: 30
+                                                        maximumValue: 200
                                                         Layout.margins: 5
                                                         Layout.fillWidth: true
                                                         Layout.fillHeight: false
-                                                        to: 125
-                                                        from: 5
-                                                        contentItem: Text {
-                                                            text: spinBox_stimPulse.value
-                                                            color: "white" // Set the font color to white
-                                                            font: spinBox_stimPulse.font
-                                                            horizontalAlignment: Text.AlignHCenter
-                                                            verticalAlignment: Text.AlignVCenter
-                                                        }
                                                     }
 
                                                     Button {
