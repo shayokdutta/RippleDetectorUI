@@ -15,7 +15,7 @@ import QtQuick.Layouts
 //import QtCharts 2.3
 Rectangle {
     id: rectangle
-    width: 600
+    width: 700
     height: 800
     anchors.fill: parent
     color: "#ffffff"
