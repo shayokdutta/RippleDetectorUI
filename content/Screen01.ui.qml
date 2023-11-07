@@ -8,7 +8,6 @@ Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on
 import QtQuick 6.5
 import QtQuick.Controls 6.5
 import RippleDetectorUI
-import "../imports/RippleDetectorUI/"
 import QtCharts 2.6
 import QtQuick.Layouts
 
@@ -150,22 +149,22 @@ Rectangle {
                                                 Layout.fillWidth: true
                                                 textFormat: Text.RichText
                                             }
-                                            TableView {
-                                                id: tableView
-                                                anchors.left: parent.left
-                                                anchors.right: parent.right
-                                                anchors.bottom: parent.bottom
-                                                Layout.fillHeight: true
-                                                Layout.fillWidth: true
+                                            //                                            TableView {
+                                            //                                                id: tableView
+                                            //                                                anchors.left: parent.left
+                                            //                                                anchors.right: parent.right
+                                            //                                                anchors.bottom: parent.bottom
+                                            //                                                Layout.fillHeight: true
+                                            //                                                Layout.fillWidth: true
 
-                                                clip: true
-                                                // Add vertical and horizontal scroll bars to the TableView
-                                                ScrollBar.vertical: ScrollBar {// Customization options for the vertical scroll bar
-                                                }
+                                            //                                                clip: true
+                                            //                                                // Add vertical and horizontal scroll bars to the TableView
+                                            //                                                ScrollBar.vertical: ScrollBar {// Customization options for the vertical scroll bar
+                                            //                                                }
 
-                                                ScrollBar.horizontal: ScrollBar {// Customization options for the horizontal scroll bar
-                                                }
-                                            }
+                                            //                                                ScrollBar.horizontal: ScrollBar {// Customization options for the horizontal scroll bar
+                                            //                                                }
+                                            //                                            }
                                         }
                                     }
 
@@ -777,62 +776,64 @@ Rectangle {
                         padding: 5
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        ChartView {
-                            id: line_rbf
-                            x: -12
-                            y: -236
-                            width: 300
-                            height: 300
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.top: parent.top
-                            anchors.bottom: parent.bottom
-                            backgroundColor: "#00000000"
-                            legend.visible: false
+                        //                        ChartView {
+                        //                            id: line_rbf
+                        //                            x: -12
+                        //                            y: -236
+                        //                            width: 300
+                        //                            height: 300
+                        //                            anchors.left: parent.left
+                        //                            anchors.right: parent.right
+                        //                            anchors.top: parent.top
+                        //                            anchors.bottom: parent.bottom
+                        //                            backgroundColor: "#00000000"
+                        //                            legend.visible: false
+                        //                            title: "moo"
 
-                            // Custom title using Text item
-                            Text {
-                                text: "Ripple band filtered"
-                                color: "white" // Set the color of the title
-                                anchors.top: parent.top
-                                anchors.left: parent.left
-                                anchors.margins: 10 // Adjust the margin as needed
-                                font.pixelSize: 18 // Adjust font size as needed
-                            }
-                            ValuesAxis {
-                                id: axisX
-                                gridVisible: false
-                                visible: false
-                            }
-                            ValuesAxis {
-                                id: axisY
-                                gridVisible: false
-                                visible: false
-                            }
-                            LineSeries {
-                                axisX: axisX
-                                axisY: axisY
-                                XYPoint {
-                                    x: 0
-                                    y: 2
-                                }
+                        //                            // Custom title using Text item
+                        //                            Text {
+                        //                                text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:15pt;\">Ripple band filtered</span></p></body></html>"
+                        //                                color: "white" // Set the color of the title
+                        //                                anchors.top: parent.top
+                        //                                anchors.left: parent.left
+                        //                                anchors.margins: 10 // Adjust the margin as needed
+                        //                                font.pixelSize: 18
+                        //                                textFormat: Text.RichText // Adjust font size as needed
+                        //                            }
+                        //                            ValuesAxis {
+                        //                                id: axisX
+                        //                                gridVisible: false
+                        //                                visible: false
+                        //                            }
+                        //                            ValuesAxis {
+                        //                                id: axisY
+                        //                                gridVisible: false
+                        //                                visible: false
+                        //                            }
+                        //                            LineSeries {
+                        //                                axisX: axisX
+                        //                                axisY: axisY
+                        //                                XYPoint {
+                        //                                    x: 0
+                        //                                    y: 2
+                        //                                }
 
-                                XYPoint {
-                                    x: 1
-                                    y: 1.2
-                                }
+                        //                                XYPoint {
+                        //                                    x: 1
+                        //                                    y: 1.2
+                        //                                }
 
-                                XYPoint {
-                                    x: 2
-                                    y: 3.3
-                                }
+                        //                                XYPoint {
+                        //                                    x: 2
+                        //                                    y: 3.3
+                        //                                }
 
-                                XYPoint {
-                                    x: 5
-                                    y: 2.1
-                                }
-                            }
-                        }
+                        //                                XYPoint {
+                        //                                    x: 5
+                        //                                    y: 2.1
+                        //                                }
+                        //                            }
+                        //                        }
                     }
 
                     Frame {
@@ -842,59 +843,59 @@ Rectangle {
                         Layout.minimumHeight: 75
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        ChartView {
-                            id: line_envelope
-                            x: -12
-                            y: -160
-                            visible: true
-                            anchors.fill: parent
-                            title: ""
-                            backgroundColor: "#00000000"
-                            legend.visible: false
+                        //                        ChartView {
+                        //                            id: line_envelope
+                        //                            x: -12
+                        //                            y: -160
+                        //                            visible: true
+                        //                            anchors.fill: parent
+                        //                            backgroundColor: "#00000000"
+                        //                            legend.visible: false
 
-                            // Custom title using Text item
-                            Text {
-                                text: "Estimated envelope"
-                                color: "white" // Set the color of the title
-                                anchors.top: parent.top
-                                anchors.left: parent.left
-                                anchors.margins: 10 // Adjust the margin as needed
-                                font.pixelSize: 18 // Adjust font size as needed
-                            }
-                            ValuesAxis {
-                                id: axisXX
-                                gridVisible: false
-                                visible: false
-                            }
-                            ValuesAxis {
-                                id: axisYY
-                                gridVisible: false
-                                visible: false
-                            }
-                            LineSeries {
-                                axisX: axisXX
-                                axisY: axisYY
-                                XYPoint {
-                                    x: 0
-                                    y: 2
-                                }
+                        //                            // Custom title using Text item
+                        //                            Text {
+                        //                                text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:15pt;\">Estimated Envelope</span></p></body></html>"
+                        //                                color: "white" // Set the color of the title
+                        //                                anchors.top: parent.top
+                        //                                anchors.left: parent.left
+                        //                                anchors.margins: 10 // Adjust the margin as needed
+                        //                                font.pixelSize: 18
+                        //                                textFormat: Text.RichText // Adjust font size as needed
+                        //                            }
+                        //                            ValuesAxis {
+                        //                                id: axisXX
+                        //                                gridVisible: false
+                        //                                visible: false
+                        //                            }
+                        //                            ValuesAxis {
+                        //                                id: axisYY
+                        //                                gridVisible: false
+                        //                                visible: false
+                        //                            }
+                        //                            LineSeries {
+                        //                                axisX: axisXX
+                        //                                axisY: axisYY
+                        //                                XYPoint {
+                        //                                    x: 0
+                        //                                    y: 2
+                        //                                }
 
-                                XYPoint {
-                                    x: 1
-                                    y: 1.2
-                                }
+                        //                                XYPoint {
+                        //                                    x: 1
+                        //                                    y: 1.2
+                        //                                }
 
-                                XYPoint {
-                                    x: 2
-                                    y: 3.3
-                                }
+                        //                                XYPoint {
+                        //                                    x: 2
+                        //                                    y: 3.3
+                        //                                }
 
-                                XYPoint {
-                                    x: 5
-                                    y: 2.1
-                                }
-                            }
-                        }
+                        //                                XYPoint {
+                        //                                    x: 5
+                        //                                    y: 2.1
+                        //                                }
+                        //                            }
+                        //                        }
                     }
                 }
             }

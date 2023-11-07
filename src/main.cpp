@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     },
     Qt::QueuedConnection);
-
+    const QString debugstring = QCoreApplication::applicationDirPath() + "/qml";
     engine.addImportPath(QCoreApplication::applicationDirPath() + "/qml");
     engine.addImportPath(":/");
 
