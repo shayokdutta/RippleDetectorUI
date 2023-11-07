@@ -16,7 +16,7 @@ import QtQuick.Studio.Components
 
 Rectangle {
     id: rectangle
-    width: 700
+    width: 725
     height: 600
     anchors.fill: parent
     color: "#ffffff"
@@ -54,11 +54,11 @@ Rectangle {
                 height: 35
                 color: "#ffffff"
                 text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:1; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:20pt;\">Sh'RippleDetector --- Postdoc Edition</span></p></body></html>"
-                anchors.left: parent.left
-                anchors.right: parent.right
                 font.pixelSize: 12
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+                Layout.fillHeight: true
+                Layout.fillWidth: true
                 bottomPadding: 2
                 topPadding: 4
                 transformOrigin: Item.TopLeft
@@ -70,8 +70,6 @@ Rectangle {
                 id: frame2
                 width: 200
                 height: 515
-                anchors.left: parent.left
-                anchors.right: parent.right
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 padding: 0
@@ -88,9 +86,6 @@ Rectangle {
                     Frame {
                         id: frame3
                         height: 0
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.top: parent.top
                         padding: 1
                         Layout.fillWidth: true
 
@@ -103,10 +98,7 @@ Rectangle {
                                 id: frame_trainingSetup
                                 width: 200
                                 height: 200
-                                anchors.left: parent.left
-                                anchors.top: parent.top
-                                anchors.bottom: parent.bottom
-                                Layout.fillHeight: false
+                                Layout.fillHeight: true
                                 padding: 0
                                 rightPadding: 0
                                 leftPadding: 0
@@ -122,8 +114,6 @@ Rectangle {
                                         id: frame_chanSelection
                                         width: 200
                                         height: 200
-                                        anchors.left: parent.left
-                                        anchors.right: parent.right
                                         padding: 0
                                         Layout.fillWidth: true
                                         Layout.fillHeight: true
@@ -138,33 +128,15 @@ Rectangle {
                                                 height: 29
                                                 color: "#ffffff"
                                                 text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:15pt;\">Channel Selection</span></p></body></html>"
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                anchors.left: parent.left
-                                                anchors.right: parent.right
-                                                anchors.top: parent.top
                                                 font.pixelSize: 12
                                                 horizontalAlignment: Text.AlignHCenter
+                                                Layout.fillHeight: true
                                                 bottomPadding: 2
                                                 topPadding: 4
                                                 Layout.fillWidth: true
                                                 textFormat: Text.RichText
                                             }
-                                            //                                            TableView {
-                                            //                                                id: tableView
-                                            //                                                anchors.left: parent.left
-                                            //                                                anchors.right: parent.right
-                                            //                                                anchors.bottom: parent.bottom
-                                            //                                                Layout.fillHeight: true
-                                            //                                                Layout.fillWidth: true
-
-                                            //                                                clip: true
-                                            //                                                // Add vertical and horizontal scroll bars to the TableView
-                                            //                                                ScrollBar.vertical: ScrollBar {// Customization options for the vertical scroll bar
-                                            //                                                }
-
-                                            //                                                ScrollBar.horizontal: ScrollBar {// Customization options for the horizontal scroll bar
-                                            //                                                }
-                                            //                                            }
+                                            TableView {}
                                         }
                                     }
 
@@ -172,9 +144,6 @@ Rectangle {
                                         id: frame_trainingParams
                                         width: 200
                                         height: 200
-                                        anchors.left: parent.left
-                                        anchors.right: parent.right
-                                        anchors.bottom: parent.bottom
                                         topPadding: 3
                                         bottomPadding: 5
                                         padding: 0
@@ -188,13 +157,11 @@ Rectangle {
                                                 id: text_trainingParams
                                                 color: "#ffffff"
                                                 text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:15pt;\">Trainng Parameters</span></p></body></html>"
-                                                anchors.left: parent.left
-                                                anchors.right: parent.right
                                                 font.pixelSize: 10
                                                 horizontalAlignment: Text.AlignHCenter
                                                 textFormat: Text.RichText
                                                 rightPadding: 0
-                                                Layout.fillWidth: false
+                                                Layout.fillWidth: true
                                             }
 
                                             RowLayout {
@@ -262,8 +229,6 @@ Rectangle {
                                                 id: rowLayout_duration
                                                 width: 100
                                                 height: 100
-                                                anchors.left: parent.left
-                                                anchors.right: parent.right
                                                 spacing: 0
                                                 Layout.fillWidth: true
 
@@ -271,7 +236,6 @@ Rectangle {
                                                     id: text_duration
                                                     color: "#ffffff"
                                                     text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Trainng Duration (s)</span></p></body></html>"
-                                                    anchors.left: parent.left
                                                     font.pixelSize: 10
                                                     horizontalAlignment: Text.AlignHCenter
                                                     textFormat: Text.RichText
@@ -302,7 +266,6 @@ Rectangle {
                                                     id: text_timeLeft
                                                     color: "#ffffff"
                                                     text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Time Remainng (s)</span></p></body></html>"
-                                                    anchors.left: parent.left
                                                     font.pixelSize: 10
                                                     horizontalAlignment: Text.AlignHCenter
                                                     textFormat: Text.RichText
@@ -325,16 +288,13 @@ Rectangle {
                                 id: frame_RDInterface
                                 width: 200
                                 height: 200
-                                anchors.right: parent.right
-                                anchors.top: parent.top
-                                anchors.bottom: parent.bottom
-                                Layout.fillHeight: false
+                                Layout.fillHeight: true
                                 padding: 0
                                 rightPadding: 0
                                 leftPadding: 0
                                 bottomPadding: 0
                                 topPadding: 0
-                                Layout.fillWidth: false
+                                Layout.fillWidth: true
 
                                 ColumnLayout {
                                     id: columnLayout
@@ -343,9 +303,6 @@ Rectangle {
 
                                     Frame {
                                         id: frame_rd
-                                        anchors.left: parent.left
-                                        anchors.right: parent.right
-                                        anchors.top: parent.top
                                         Layout.fillHeight: false
                                         Layout.fillWidth: true
                                         padding: 0
@@ -407,7 +364,6 @@ Rectangle {
                                                             id: text_detectionThreshold
                                                             color: "#ffffff"
                                                             text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Detection Threshold</span></p></body></html>"
-                                                            anchors.left: parent.left
                                                             font.pixelSize: 8
                                                             horizontalAlignment: Text.AlignLeft
                                                             Layout.fillWidth: false
@@ -455,8 +411,7 @@ Rectangle {
                                                         Text {
                                                             id: text_postStimBlock
                                                             color: "#ffffff"
-                                                            text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Post Stim Block (ms)</span></p></body></html>"
-                                                            anchors.left: parent.left
+                                                            text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Post Stim Block (ms)</span></p></body></html>"
                                                             font.pixelSize: 10
                                                             textFormat: Text.RichText
                                                         }
@@ -468,14 +423,14 @@ Rectangle {
                                                             value: 100
                                                             stepSize: 1
                                                             Layout.margins: 5
-                                                            Layout.fillWidth: true
+                                                            Layout.fillWidth: false
                                                             Layout.fillHeight: false
                                                         }
 
                                                         Text {
                                                             id: text_maxStimRate
                                                             color: "#ffffff"
-                                                            text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">Max Stim Rate (Hz)</span></p></body></html>"
+                                                            text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Max Stim Rate (Hz)</span></p></body></html>"
                                                             font.pixelSize: 10
                                                             textFormat: Text.RichText
                                                         }
@@ -557,6 +512,7 @@ Rectangle {
                                                             height: 15
                                                             opacity: 0.5
                                                             text: qsTr("")
+                                                            bottomPadding: 4
                                                             Layout.fillWidth: true
                                                             padding: 1
                                                             display: AbstractButton.IconOnly
@@ -595,6 +551,7 @@ Rectangle {
                                                             id: checkBox_LRD
                                                             height: 15
                                                             opacity: 0.5
+                                                            bottomPadding: 4
                                                             padding: 1
                                                             display: AbstractButton.IconOnly
                                                         }
@@ -604,6 +561,7 @@ Rectangle {
                                                             color: "#ffffff"
                                                             text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Enable Long </span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Ripple Detection</span></p></body></html>"
                                                             font.pixelSize: 10
+                                                            bottomPadding: 3
                                                             rightPadding: 10
                                                             textFormat: Text.RichText
                                                         }
@@ -613,6 +571,7 @@ Rectangle {
                                                             color: "#ffffff"
                                                             text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Long Ripple Time </span></p>\n<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Thresh (ms)</span></p></body></html>"
                                                             font.pixelSize: 10
+                                                            bottomPadding: 3
                                                             Layout.fillWidth: false
                                                             textFormat: Text.RichText
                                                         }
@@ -668,10 +627,9 @@ Rectangle {
                                                         id: text_TTLInterface
                                                         color: "#ffffff"
                                                         text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:15pt;\">TTL Interface</span></p></body></html>"
-                                                        anchors.bottom: parent.bottom
-                                                        anchors.fill: parent
                                                         font.pixelSize: 12
                                                         horizontalAlignment: Text.AlignHCenter
+                                                        Layout.fillWidth: true
                                                         topPadding: 5
                                                         textFormat: Text.RichText
                                                     }
@@ -838,7 +796,6 @@ Rectangle {
 
                     Frame {
                         id: frame_envelope
-                        anchors.bottom: parent.bottom
                         padding: 5
                         Layout.minimumHeight: 75
                         Layout.fillWidth: true
