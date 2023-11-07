@@ -377,7 +377,6 @@ Rectangle {
                                                             value: 3
                                                             stepSize: 0.25
                                                             Layout.margins: 5
-                                                            Layout.fillHeight: false
                                                             Layout.fillWidth: true
                                                         }
 
@@ -536,7 +535,7 @@ Rectangle {
                                                             maximumValue: 1000
                                                             stepSize: 10
                                                             Layout.margins: 5
-                                                            Layout.fillWidth: false
+                                                            Layout.fillWidth: true
                                                             Layout.fillHeight: false
                                                         }
                                                     }

@@ -4,7 +4,7 @@ import QtQuick.Controls 2.15
 Item {
     id: root
     width: 120 // Set the default width of the custom SpinBox
-    height: 25 // Set the default height of the custom SpinBox
+    height: 40 // Set the default height of the custom SpinBox
 
     property real value: 3.00 // Initial value as a decimal
     property real minimumValue: 0.00 // Minimum value as a decimal
