@@ -13,6 +13,8 @@ if (Qt6_VERSION VERSION_GREATER_EQUAL 6.3)
     qt_standard_project_setup()
 endif()
 
+set(CMAKE_OBJECT_PATH_MAX 1024)
+
 qt_add_executable(RippleDetectorUIApp src/main.cpp)
 
 qt_add_resources(RippleDetectorUIApp "configuration"
