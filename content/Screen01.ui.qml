@@ -17,7 +17,7 @@ import QtQuick.Studio.Components
 Rectangle {
     id: rectangle
     width: 725
-    height: 600
+    height: 660
     anchors.fill: parent
     color: "#ffffff"
     border.color: "#616161"
@@ -130,13 +130,37 @@ Rectangle {
                                                 text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:15pt;\">Channel Selection</span></p></body></html>"
                                                 font.pixelSize: 12
                                                 horizontalAlignment: Text.AlignHCenter
-                                                Layout.fillHeight: true
+                                                Layout.fillHeight: false
                                                 bottomPadding: 2
                                                 topPadding: 4
                                                 Layout.fillWidth: true
                                                 textFormat: Text.RichText
                                             }
-                                            TableView {}
+                                            TableView {
+                                                id: tableView
+//                                                Layout.preferredWidth: parent.width
+                                                Layout.fillWidth: true
+                                                Layout.fillHeight: true
+                                                Layout.alignment: Qt.AlignHCenter
+                                                clip: true
+                                                model: channelSelectionModel
+                                                delegate: ItemDelegate {
+                                                    padding: 25
+                                                    clip: true
+                                                    width: tableView.width
+                                                    background: Rectangle {
+                                                        color: "black"
+                                                        opacity: 0.25
+                                                    }
+                                                    Label {
+                                                        id: tableLabelElement
+                                                        text: model.display
+                                                        color: "white"
+                                                        font.bold: true
+                                                        anchors.centerIn: parent
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
 

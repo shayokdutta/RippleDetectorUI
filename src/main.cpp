@@ -7,6 +7,7 @@
 #include "app_environment.h"
 #include "import_qml_components_plugins.h"
 #include "import_qml_plugins.h"
+#include "channelselection.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +16,11 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    ChannelSelection channelSelection;
+
+    engine.rootContext()->setContextProperty("channelSelectionModel", channelSelection.getProbeChannelsModel());
+
     const QUrl url(u"qrc:/qt/qml/Main/main.qml"_qs);
     QObject::connect(
                 &engine, &QQmlApplicationEngine::objectCreated, &app,
@@ -23,7 +29,6 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     },
     Qt::QueuedConnection);
-    const QString debugstring = QCoreApplication::applicationDirPath() + "/qml";
     engine.addImportPath(QCoreApplication::applicationDirPath() + "/qml");
     engine.addImportPath(":/");
 
