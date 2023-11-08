@@ -140,18 +140,39 @@ Rectangle {
                                             }
                                             TableView {
                                                 id: tableView
-                                                Layout.fillWidth: true
+                                                resizableRows: true
+                                                resizableColumns: true
                                                 Layout.fillHeight: true
+                                                Layout.fillWidth: true
                                                 model: channelSelectionModel
-
+                                                clip: true
+                                                Rectangle {
+                                                    anchors.fill: parent
+                                                    color: 'black'
+                                                    opacity: 0.25
+                                                }
                                                 delegate: ItemDelegate {
-                                                    width: tableView.width / tableView.model.columnCount // Divide by the number of columns
-                                                    height: 30 // Or some other appropriate height
-
-                                                    // Bind text directly to a role from your model
-                                                    text: model.displayText // 'displayText' is a role provided by your model
-                                                    font.bold: model.isHeader // 'isHeader' is another role indicating if it's a header row
-                                                    // Set other properties as needed
+                                                    implicitWidth: tableView.width / 4
+                                                    Label {
+                                                        // Bind text directly to a role from your model
+                                                        text: model.displayText // 'displayText' is a role provided by your model
+                                                        color: "white"
+                                                        anchors.centerIn: parent
+                                                        font.bold: model.isHeader // 'isHeader' is another role indicating if it's a header row
+                                                    }
+                                                    leftPadding: 0
+                                                    rightPadding: 0
+                                                }
+                                                ScrollBar.vertical: ScrollBar {
+                                                    id: verticalScrollBar
+                                                    visible: true
+                                                    wheelEnabled: true
+                                                    active: true
+                                                }
+                                                ScrollBar.horizontal: ScrollBar {
+                                                    id: horizontalScrollBar
+                                                    visible: true
+                                                    active: true
                                                 }
                                             }
                                         }
