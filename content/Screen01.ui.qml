@@ -112,6 +112,7 @@ Rectangle {
 
                                     Frame {
                                         id: frame_chanSelection
+                                        objectName: "frame_chanSelection"
                                         width: 200
                                         height: 200
                                         padding: 0
@@ -121,6 +122,7 @@ Rectangle {
                                         ColumnLayout {
                                             id: columnLayout_chanSelection
                                             anchors.fill: parent
+                                            spacing: 0
 
                                             Text {
                                                 id: text_channelSelection
@@ -138,27 +140,18 @@ Rectangle {
                                             }
                                             TableView {
                                                 id: tableView
-//                                                Layout.preferredWidth: parent.width
                                                 Layout.fillWidth: true
                                                 Layout.fillHeight: true
-                                                Layout.alignment: Qt.AlignHCenter
-                                                clip: true
                                                 model: channelSelectionModel
+
                                                 delegate: ItemDelegate {
-                                                    padding: 25
-                                                    clip: true
-                                                    width: tableView.width
-                                                    background: Rectangle {
-                                                        color: "black"
-                                                        opacity: 0.25
-                                                    }
-                                                    Label {
-                                                        id: tableLabelElement
-                                                        text: model.display
-                                                        color: "white"
-                                                        font.bold: true
-                                                        anchors.centerIn: parent
-                                                    }
+                                                    width: tableView.width / tableView.model.columnCount // Divide by the number of columns
+                                                    height: 30 // Or some other appropriate height
+
+                                                    // Bind text directly to a role from your model
+                                                    text: model.displayText // 'displayText' is a role provided by your model
+                                                    font.bold: model.isHeader // 'isHeader' is another role indicating if it's a header row
+                                                    // Set other properties as needed
                                                 }
                                             }
                                         }
