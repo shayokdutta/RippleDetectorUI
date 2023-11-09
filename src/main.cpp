@@ -36,5 +36,16 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
+    /* read in number of rows we need in the channel selection table somehow */
+    const int totalRows = 10;
+    for(uint i =0; i<totalRows; ++i){
+        QList<QVariant> newRow;
+        newRow << QString::number(i);
+        newRow << "---";
+        newRow << "---";
+        newRow << "";
+        channelSelection.getProbeChannelsModel()->addRow(newRow);
+    }
+
     return app.exec();
 }

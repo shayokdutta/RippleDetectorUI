@@ -25,12 +25,15 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
+    void addRow(const QList<QVariant> &rowData);
 
     // Property getter
     int getColumnCount() const { return numColumns; }
 
 signals:
     void columnCountChanged();
+    void rowsAdded(int first, int last);
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>());
 
 private:
     QList<QList<QVariant>> rows;

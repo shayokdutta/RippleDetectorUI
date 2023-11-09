@@ -141,7 +141,6 @@ Rectangle {
                                             TableView {
                                                 id: tableView
                                                 resizableRows: true
-                                                resizableColumns: true
                                                 Layout.fillHeight: true
                                                 Layout.fillWidth: true
                                                 model: channelSelectionModel

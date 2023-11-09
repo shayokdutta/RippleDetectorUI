@@ -27,6 +27,21 @@ QVariant ChannelDataTable::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
+void ChannelDataTable::addRow(const QList<QVariant> &rowData)
+{
+    int newRow = rows.count();
+
+    if(rowData.count() != numColumns){
+        qDebug() << "Shay what are you doing the table size is limited.\n";
+        return;
+    }
+
+    beginInsertRows(QModelIndex(), newRow , newRow);
+    rows.append(rowData);
+    endInsertRows();
+    emit rowsAdded(newRow, newRow);
+}
+
 
 QHash<int, QByteArray> ChannelDataTable::roleNames() const {
     QHash<int, QByteArray> roles;
