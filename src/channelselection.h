@@ -38,6 +38,7 @@ public:
 public slots:
     void setChannels();
     bool setData(int row, int column, const QVariant &value, int role);
+    void restoreChannels();
 
 signals:
     void columnCountChanged();
@@ -51,19 +52,34 @@ private:
     QVector<int> RDChans;
     int FDChan;
     QList<QList<QVariant>> rows;
+    QList<QList<QVariant>> originalRows;
     int numColumns;
     int numRows;
+    int totalRows;
 };
 
-class ChannelSelection
-{
+class ChannelSelection : public QObject{
+    Q_OBJECT
 public:
-    ChannelSelection();
+    enum dataTypes {
+        NPX_IMEC = 1,
+        TRODES_INTAN,
+        NPX_TRODES
+    };
+
+    ChannelSelection(QObject *parent = nullptr);
     ~ChannelSelection();
     ChannelDataTable* getProbeChannelsModel(){ return probeChannels; }
 
+public slots:
+    void updateChannels();
+
+signals:
+    void sendData(/*dataType, dataPacket*/);
+
 private:
     ChannelDataTable *probeChannels;
+    int dataType;
     bool channelsSet;
 };
 

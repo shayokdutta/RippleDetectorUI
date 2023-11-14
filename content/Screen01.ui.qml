@@ -179,34 +179,69 @@ Rectangle {
                                                 height: 100
                                                 Layout.fillWidth: true
 
-                                                Button {
-                                                    id: button_SetChannels
+//                                                Button {
+//                                                    id: button_SetChannels
+//                                                    width: 500
+//                                                    height: 15
+//                                                    opacity: 0.79
+//                                                    visible: true
+//                                                    text: "Set Channels"
+//                                                    transformOrigin: Item.TopLeft
+//                                                    topPadding: 0
+//                                                    spacing: 6
+//                                                    rightPadding: 0
+//                                                    padding: 0
+//                                                    leftPadding: 0
+//                                                    icon.width: 10
+//                                                    icon.height: 10
+//                                                    highlighted: true
+//                                                    font.pointSize: 8
+//                                                    flat: true
+//                                                    display: AbstractButton.TextBesideIcon
+//                                                    clip: false
+//                                                    bottomPadding: 0
+//                                                    Layout.fillWidth: true
+//                                                    Layout.fillHeight: false
+//                                                    Layout.alignment: Qt.AlignHCenter
+//                                                                      | Qt.AlignVCenter
+//                                                    onClicked: {
+//                                                        channelSelectionModel.setChannels();
+//                                                    }
+//                                                }
+                                                Text {
+                                                    id: text_SetChannels
+                                                    color: "#ffffff"
+                                                    text: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Universalis ADF Std'; font-size:12pt;\">Set Channels</span></p></body></html>"
+                                                    font.pixelSize: 10
+                                                    horizontalAlignment: Text.AlignHCenter
+                                                    textFormat: Text.RichText
+                                                    rightPadding: 0
+                                                    Layout.fillWidth: false
+                                                }
+
+                                                Switch {
+                                                    id: switch_SetChannels
                                                     width: 500
-                                                    height: 15
+                                                    height: 40  // Adjusted for typical switch size
                                                     opacity: 0.79
                                                     visible: true
-                                                    text: "Set Channels"
-                                                    transformOrigin: Item.TopLeft
-                                                    topPadding: 0
-                                                    spacing: 6
-                                                    rightPadding: 0
-                                                    padding: 0
-                                                    leftPadding: 0
-                                                    icon.width: 10
-                                                    icon.height: 10
-                                                    highlighted: true
-                                                    font.pointSize: 8
-                                                    flat: true
-                                                    display: AbstractButton.TextBesideIcon
-                                                    clip: false
-                                                    bottomPadding: 0
-                                                    Layout.fillWidth: true
-                                                    Layout.fillHeight: false
-                                                    Layout.alignment: Qt.AlignHCenter
-                                                                      | Qt.AlignVCenter
-                                                    onClicked: {
-                                                        channelSelectionModel.setChannels();
+
+                                                    // Optional: Text label next to the switch
+                                                    // Note: Switch doesn't have a 'text' property like Button
+
+                                                    // Switch specific properties
+                                                    onToggled: {
+                                                        if (checked) {  // Execute when the switch is turned on
+                                                            channelSelectionModel.setChannels();
+                                                            console.log("Channels set for ripple detection!")
+                                                        } else {
+                                                            channelSelectionModel.restoreChannels(); // let's get the table reset.
+                                                            console.log("All channels restored. Please set channels again for ripple detection!")
+                                                        }
                                                     }
+
+                                                    // Styling (optional)
+                                                    // Customize the appearance of the switch as needed
                                                 }
 
                                                 Button {

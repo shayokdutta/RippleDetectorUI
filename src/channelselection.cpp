@@ -7,13 +7,46 @@ ChannelDataTable::ChannelDataTable(QObject *parent)
     rows.append({"Channel", "μ", "σ", "RD?", "FD?"});
 }
 
+void ChannelDataTable::restoreChannels() {
+    RDChans.clear();  // Clear the RD channels list
+    FDChan = -1;  // Reset the FD channel
+
+    // Reset the checkbox states for all original rows
+    // Resize checkboxStates to match the total number of rows
+    checkboxStates.resize(totalRows - 1);  // Assuming the first row is a header and not included in checkboxStates
+    for (int row = 0; row < checkboxStates.size(); ++row) {
+        checkboxStates[row].resize(2);  // Resize each row's checkbox state list (assuming two checkboxes per row)
+        for (int col = 0; col < checkboxStates[row].size(); ++col) {
+            checkboxStates[row][col] = false;
+        }
+    }
+
+    // Restore the rows to the original state if necessary
+    // Assuming you have a method or logic to repopulate 'rows' with original data
+     rows = originalRows; // Where originalRows is a stored copy of the original data
+
+    // Update the number of rows in the model to reflect the original total
+    beginResetModel();
+    numRows = totalRows;
+    endResetModel();
+
+    // Optionally, emit dataChanged for the entire model to update the view
+    emit dataChanged(createIndex(0, 0), createIndex(numRows - 1, numColumns - 1));
+    emit channelsUpdated();
+}
+
+
 void ChannelDataTable::setChannels() {
     RDChans.clear();  // Clear the existing channels
     FDChan = -1;  // Reset FDChan
+    totalRows = numRows; // store total number of rows for restoration as we're about to destroy the table
+    originalRows = rows;
+    // Create a list to keep track of rows to be kept
+    QList<int> rowsToKeep;
 
     // Iterate over each row, skipping the header row
     qDebug() << "Channels for ripple detection are as follows:";
-    for (uint row = 1; row < numRows; ++row) {  // Start from 1 to skip header
+    for (int row = 1; row < numRows; ++row) {  // Start from 1 to skip header
         bool ok;
         int channelNum = rows[row][0].toInt(&ok);  // Convert the first column data to int
         if (!ok) {
@@ -21,28 +54,39 @@ void ChannelDataTable::setChannels() {
             continue;
         }
 
-        // Check if the first checkbox (RD?) is true
-        if (checkboxStates[row - 1][0]) {
-            RDChans.append(channelNum);  // Append the number to RDChans
+        // Check if the first checkbox (RD?) or second checkbox (FD?) is true
+        if (checkboxStates[row - 1][0] || checkboxStates[row - 1][1]) {
+            rowsToKeep.append(row);
+            RDChans.append(channelNum);  // Append the number to RDChans if RD? is true
             qDebug() << channelNum;
-        }
-
-        // Check if the second checkbox (FD?) is true
-        if (checkboxStates[row - 1][1]) {
-            FDChan = channelNum;  // Store the number in FDChan
+            if (checkboxStates[row - 1][1]) {
+                FDChan = channelNum;  // Store the number in FDChan if FD? is true
+            }
         }
     }
-    if(RDChans.size() == 0){
+
+    // Now remove rows that are not in rowsToKeep
+    for (int row = numRows - 1; row > 0; --row) {  // Iterate backwards to avoid index issues
+        if (!rowsToKeep.contains(row)) {
+            beginRemoveRows(QModelIndex(), row, row);
+            rows.removeAt(row);
+            checkboxStates.removeAt(row - 1);
+            endRemoveRows();
+        }
+    }
+
+    if (RDChans.isEmpty()) {
         qDebug() << "NO CHANNELS SELECTED?";
     }
-    if(FDChan!=-1){
+    if (FDChan != -1) {
         qDebug() << "False Detection Channel Set to " + QString::number(FDChan);
     }
-    else{
-        // Emit a signal or perform other actions if needed
-        emit channelsUpdated();  // Assuming you have declared this signal
-    }
+    emit channelsUpdated();  // Assuming you have declared this signal
+
+    // Update the row count
+    numRows = rows.count();
 }
+
 
 int ChannelDataTable::rowCount(const QModelIndex &parent) const {
     return parent.isValid() ? 0 : numRows;
@@ -99,23 +143,36 @@ QModelIndex ChannelDataTable::index(int row, int column, const QModelIndex &pare
 }
 
 
-bool ChannelDataTable::setData(int row, int column, const QVariant &value, int role){
+bool ChannelDataTable::setData(int row, int column, const QVariant &value, int role) {
     QModelIndex index = this->index(row, column, QModelIndex()); // Create the QModelIndex
     if (!index.isValid())
         return false;
+
     if (role == CheckBoxStateRole && index.row() > 0) { // Skip header row
         int adjustedRow = index.row() - 1;
         int checkboxIndex = index.column() - numColumns + 2;
+
         if (adjustedRow >= 0 && adjustedRow < checkboxStates.size() &&
             checkboxIndex >= 0 && checkboxIndex < checkboxStates[adjustedRow].size()) {
             bool checked = value.toBool();
             checkboxStates[adjustedRow][checkboxIndex] = checked;
+
+            // If one checkbox is checked, uncheck the other in the same row
+            if (checked) {
+                int otherCheckboxIndex = checkboxIndex == 0 ? 1 : 0; // Determine the index of the other checkbox
+                checkboxStates[adjustedRow][otherCheckboxIndex] = false; // Uncheck the other checkbox
+
+                // Emit dataChanged for the other checkbox in the same row
+                QModelIndex otherIndex = this->index(row, numColumns - 2 + otherCheckboxIndex, QModelIndex());
+                emit dataChanged(otherIndex, otherIndex, QVector<int>() << CheckBoxStateRole);
+            }
+
             // If the FD checkbox is being checked, uncheck all other FD checkboxes
             if (index.column() == numColumns - 1 && checked) {
-                for (int row = 0; row < checkboxStates.size(); ++row) {
-                    if (row != adjustedRow) {
-                        checkboxStates[row][1] = false;  // Uncheck FD checkbox in other rows
-                        QModelIndex otherIndex = this->index(row + 1, index.column(), QModelIndex());
+                for (int otherRow = 0; otherRow < checkboxStates.size(); ++otherRow) {
+                    if (otherRow != adjustedRow) {
+                        checkboxStates[otherRow][1] = false;  // Uncheck FD checkbox in other rows
+                        QModelIndex otherIndex = this->index(otherRow + 1, index.column(), QModelIndex());
                         emit dataChanged(otherIndex, otherIndex, QVector<int>() << CheckBoxStateRole);
                     }
                 }
@@ -128,6 +185,7 @@ bool ChannelDataTable::setData(int row, int column, const QVariant &value, int r
     }
     return false;
 }
+
 
 
 void ChannelDataTable::addRow(const QList<QVariant> &rowData)
@@ -160,11 +218,15 @@ QHash<int, QByteArray> ChannelDataTable::roleNames() const {
     return roles;
 }
 
-ChannelSelection::ChannelSelection():channelsSet(false)
-{
+ChannelSelection::ChannelSelection(QObject *parent):channelsSet(false), QObject(parent){
     probeChannels = new ChannelDataTable();
+    connect(probeChannels, &ChannelDataTable::channelsUpdated, this, &ChannelSelection::updateChannels);
 }
 
 ChannelSelection::~ChannelSelection(){
     delete probeChannels;
+}
+
+void ChannelSelection::updateChannels(){
+    channelsSet = !channelsSet; // flip it every time. Should be false first.
 }
