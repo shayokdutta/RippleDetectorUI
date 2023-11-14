@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
     // Expose the ChannelSelection model to QML
     engine.rootContext()->setContextProperty("channelSelectionModel", channelSelection.getProbeChannelsModel());
-
+    engine.rootContext()->setContextProperty("CheckBoxStateRole", ChannelDataTable::checkBoxStateRole());
     const QUrl url(QStringLiteral("qrc:/qt/qml/Main/main.qml"));
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -43,7 +43,8 @@ int main(int argc, char *argv[])
         newRow << QString::number(i);
         newRow << "---";
         newRow << "---";
-        newRow << "";
+        newRow << false;
+        newRow << false;
         channelSelection.getProbeChannelsModel()->addRow(newRow);
     }
 

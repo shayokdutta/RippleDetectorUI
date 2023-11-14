@@ -12,13 +12,14 @@ qt6_add_qml_module(content
         App.qml
         Screen01.ui.qml
     RESOURCES
-        fonts/UniversalisADFStd-Bold.otf
         fonts/UniversalisADFStd-BoldCond.otf
-        fonts/UniversalisADFStd-BoldCondIt.otf
-        fonts/UniversalisADFStd-BoldItalic.otf
-        fonts/UniversalisADFStd-Cond.otf
-        fonts/UniversalisADFStd-CondItalic.otf
-        fonts/UniversalisADFStd-Italic.otf
         fonts/UniversalisADFStd-Regular.otf
+        fonts/UniversalisADFStd-Cond.otf
+        fonts/UniversalisADFStd-BoldItalic.otf
+        fonts/UniversalisADFStd-Italic.otf
+        fonts/UniversalisADFStd-Bold.otf
+        fonts/UniversalisADFStd-BoldCondIt.otf
+        fonts/UniversalisADFStd-CondItalic.otf
+        QML_FILES TableViewComponent.qml
 
 )

@@ -34,6 +34,8 @@ Rectangle {
         orientation: Gradient.Vertical
     }
 
+//    property alias tableViewArea: tableViewPlaceholder
+
     Frame {
         id: frame
         anchors.fill: parent
@@ -138,41 +140,11 @@ Rectangle {
                                                 Layout.fillWidth: true
                                                 textFormat: Text.RichText
                                             }
-                                            TableView {
-                                                id: tableView
-                                                resizableRows: true
-                                                Layout.fillHeight: true
-                                                Layout.fillWidth: true
-                                                model: channelSelectionModel
-                                                clip: true
-                                                Rectangle {
-                                                    anchors.fill: parent
-                                                    color: 'black'
-                                                    opacity: 0.25
-                                                }
-                                                delegate: ItemDelegate {
-                                                    implicitWidth: tableView.width / 4
-                                                    Label {
-                                                        // Bind text directly to a role from your model
-                                                        text: model.displayText // 'displayText' is a role provided by your model
-                                                        color: "white"
-                                                        anchors.centerIn: parent
-                                                        font.bold: model.isHeader // 'isHeader' is another role indicating if it's a header row
-                                                    }
-                                                    leftPadding: 0
-                                                    rightPadding: 0
-                                                }
-                                                ScrollBar.vertical: ScrollBar {
-                                                    id: verticalScrollBar
-                                                    visible: true
-                                                    wheelEnabled: true
-                                                    active: true
-                                                }
-                                                ScrollBar.horizontal: ScrollBar {
-                                                    id: horizontalScrollBar
-                                                    visible: true
-                                                    active: true
-                                                }
+                                            TableViewComponent {
+                                                    id: tableViewComponent
+                                                    Layout.fillHeight: true
+                                                    Layout.fillWidth: true
+                                                    model: channelSelectionModel // Bind the model
                                             }
                                         }
                                     }
@@ -208,7 +180,7 @@ Rectangle {
                                                 Layout.fillWidth: true
 
                                                 Button {
-                                                    id: button_UnfreezeSelection
+                                                    id: button_SetChannels
                                                     width: 500
                                                     height: 15
                                                     opacity: 0.79
@@ -232,6 +204,9 @@ Rectangle {
                                                     Layout.fillHeight: false
                                                     Layout.alignment: Qt.AlignHCenter
                                                                       | Qt.AlignVCenter
+                                                    onClicked: {
+                                                        channelSelectionModel.setChannels();
+                                                    }
                                                 }
 
                                                 Button {
