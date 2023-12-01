@@ -17,7 +17,8 @@ set(CMAKE_OBJECT_PATH_MAX 1024)
 
 qt_add_executable(RippleDetectorUIApp src/main.cpp
     src/channelselection.h src/channelselection.cpp
-    src/stimulationhandler.h src/stimulationhandler.cpp)
+    src/stimulationhandler.h src/stimulationhandler.cpp
+    src/datainterface.h src/datainterface.cpp)
 
 qt_add_resources(RippleDetectorUIApp "configuration"
     PREFIX "/"

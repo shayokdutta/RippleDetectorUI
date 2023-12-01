@@ -1,5 +1,9 @@
 #include "channelselection.h"
 
+/**
+ * @brief ChannelDataTable::ChannelDataTable
+ * @param parent
+ */
 ChannelDataTable::ChannelDataTable(QObject *parent)
     : QAbstractTableModel(parent), numColumns(5), numRows(1) // Assuming you want 5 columns and at least 1 row initially
 {
@@ -7,6 +11,9 @@ ChannelDataTable::ChannelDataTable(QObject *parent)
     rows.append({"Channel", "μ", "σ", "RD?", "FD?"});
 }
 
+/**
+ * @brief ChannelDataTable::restoreChannels
+ */
 void ChannelDataTable::restoreChannels() {
     RDChans.clear();  // Clear the RD channels list
     FDChan = -1;  // Reset the FD channel
@@ -35,7 +42,9 @@ void ChannelDataTable::restoreChannels() {
     emit channelsUpdated();
 }
 
-
+/**
+ * @brief ChannelDataTable::setChannels
+ */
 void ChannelDataTable::setChannels() {
     RDChans.clear();  // Clear the existing channels
     FDChan = -1;  // Reset FDChan
@@ -87,15 +96,30 @@ void ChannelDataTable::setChannels() {
     numRows = rows.count();
 }
 
-
+/**
+ * @brief ChannelDataTable::rowCount
+ * @param parent
+ * @return
+ */
 int ChannelDataTable::rowCount(const QModelIndex &parent) const {
     return parent.isValid() ? 0 : numRows;
 }
 
+/**
+ * @brief ChannelDataTable::columnCount
+ * @param parent
+ * @return
+ */
 int ChannelDataTable::columnCount(const QModelIndex &parent) const {
     return parent.isValid() ? 0 : numColumns;
 }
 
+/**
+ * @brief ChannelDataTable::data
+ * @param index
+ * @param role
+ * @return
+ */
 QVariant ChannelDataTable::data(const QModelIndex &index, int role) const {
     if (!index.isValid() || index.row() >= numRows || index.column() >= numColumns) {
 //        qDebug() << "Invalid index or out of bounds: Row" << index.row() << "Column" << index.column();
@@ -135,6 +159,13 @@ QVariant ChannelDataTable::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
+/**
+ * @brief ChannelDataTable::index
+ * @param row
+ * @param column
+ * @param parent
+ * @return
+ */
 QModelIndex ChannelDataTable::index(int row, int column, const QModelIndex &parent) const {
     if (parent.isValid() || row >= rowCount() || column >= columnCount()) {
         return QModelIndex();  // Returns an invalid index
@@ -142,7 +173,14 @@ QModelIndex ChannelDataTable::index(int row, int column, const QModelIndex &pare
     return createIndex(row, column);
 }
 
-
+/**
+ * @brief ChannelDataTable::setData
+ * @param row
+ * @param column
+ * @param value
+ * @param role
+ * @return
+ */
 bool ChannelDataTable::setData(int row, int column, const QVariant &value, int role) {
     QModelIndex index = this->index(row, column, QModelIndex()); // Create the QModelIndex
     if (!index.isValid())
@@ -186,8 +224,10 @@ bool ChannelDataTable::setData(int row, int column, const QVariant &value, int r
     return false;
 }
 
-
-
+/**
+ * @brief ChannelDataTable::addRow
+ * @param rowData
+ */
 void ChannelDataTable::addRow(const QList<QVariant> &rowData)
 {
     int newRow = rows.count();
@@ -208,7 +248,10 @@ void ChannelDataTable::addRow(const QList<QVariant> &rowData)
     emit rowsAdded(newRow, newRow);
 }
 
-
+/**
+ * @brief ChannelDataTable::roleNames
+ * @return
+ */
 QHash<int, QByteArray> ChannelDataTable::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[DisplayTextRole] = "displayText";
@@ -218,15 +261,25 @@ QHash<int, QByteArray> ChannelDataTable::roleNames() const {
     return roles;
 }
 
+/**
+ * @brief ChannelSelection::ChannelSelection
+ * @param parent
+ */
 ChannelSelection::ChannelSelection(QObject *parent):channelsSet(false), QObject(parent){
     probeChannels = new ChannelDataTable();
     connect(probeChannels, &ChannelDataTable::channelsUpdated, this, &ChannelSelection::updateChannels);
 }
 
+/**
+ * @brief ChannelSelection::~ChannelSelection
+ */
 ChannelSelection::~ChannelSelection(){
     delete probeChannels;
 }
 
+/**
+ * @brief ChannelSelection::updateChannels
+ */
 void ChannelSelection::updateChannels(){
     channelsSet = !channelsSet; // flip it every time. Should be false first.
 }

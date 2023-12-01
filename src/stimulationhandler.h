@@ -7,7 +7,7 @@
 class StimulationHandler : public QObject{
     Q_OBJECT
 public:
-    StimulationHandler();
+    StimulationHandler(ChannelSelection *chanSelect,QObject *parent = nullptr);
 
     // this should just be spawning all ripple detectors that are necessary
     void spawnRippleDetectors();
@@ -20,7 +20,7 @@ public slots:
     void handleData(/*dataType, dataPacket*/); // receives data from ChannelSelection object
 
 private:
-    ChannelSelection dataChan; // do we need this?
+    ChannelSelection* dataChan;
     // rippleDetectors
     // RPi Interface
 
