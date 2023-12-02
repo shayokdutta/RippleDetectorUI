@@ -75,7 +75,8 @@ int main(int argc, char *argv[])
 
         if(std::strcmp("WindowsOpenEphysIMECNPXIe",argv[1])==0){
             dataInterfacePtr = new NeuropixelsOpenEphysIMECInterface(serverPort, sharedMemoryName, serverIPAddress);
-
+            // Start processing data (listening to socket and reading from shared memory)
+            static_cast<NeuropixelsOpenEphysIMECInterface*>(dataInterfacePtr)->processData();
         }
 
         if (totalRows <= 0) {

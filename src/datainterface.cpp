@@ -1,14 +1,8 @@
 #include "datainterface.h"
 
-#ifdef _WIN32
-// Include necessary headers for Windows socket programming
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#include <windows.h> // Ensure Windows API is included for HANDLE and LPVOID
-#endif
-
 #include <iostream>
 #include <QCoreApplication>
+#include <QThread>
 
 /**
  * @brief NeuropixelsOpenEphysIMECInterface::NeuropixelsOpenEphysIMECInterface
@@ -20,6 +14,8 @@ NeuropixelsOpenEphysIMECInterface::NeuropixelsOpenEphysIMECInterface(int port, c
     : DataInterface(port, sharedMemName, IPAddr) {
 
     // open socket **********************************************************
+    // Creating Messaging socket as a client
+    std::cout << "\nCreating Messaging socket.";
     WSADATA wsaData;
     int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0) {
@@ -34,44 +30,39 @@ NeuropixelsOpenEphysIMECInterface::NeuropixelsOpenEphysIMECInterface(int port, c
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
-    hints.ai_flags = AI_PASSIVE;
 
     // Resolve the server address and port
     iResult = getaddrinfo(serverIPAddress.c_str(), std::to_string(serverPort).c_str(), &hints, &result);
     if (iResult != 0) {
+        std::cout << "\nError resolving server address and port.";
         WSACleanup();
         return;
     }
 
     // Create a socket for connecting to server
-    ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
-    if (ListenSocket == INVALID_SOCKET) {
+    SOCKET ConnectSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+    if (ConnectSocket == INVALID_SOCKET) {
         freeaddrinfo(result);
         WSACleanup();
+        std::cout << "\nError creating socket to connect to server.";
         return;
     }
 
-    // Setup the TCP listening socket
-    iResult = bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
+    // Connect to the server
+    iResult = ::connect(ConnectSocket, result->ai_addr, (int)result->ai_addrlen); // winsock api connect function
     if (iResult == SOCKET_ERROR) {
-        closesocket(ListenSocket);
+        closesocket(ConnectSocket);
         freeaddrinfo(result);
         WSACleanup();
+        std::cout << "\nError connecting to server.";
         return;
     }
 
     freeaddrinfo(result);
-
-    iResult = listen(ListenSocket, SOMAXCONN);
-    if (iResult == SOCKET_ERROR) {
-        closesocket(ListenSocket);
-        WSACleanup();
-        return;
-    }
-
-    std::cout << "\nMessage receiving socket opened!";
+    std::cout << "\nConnected to messaging server!";
 
     // Open the shared memory **********************************************************
+    std::cout << "\nCreating sharedmemory map.";
     hMapFile = OpenFileMappingW(
         FILE_MAP_READ,   // Read access
         FALSE,           // Do not inherit the name
@@ -140,66 +131,113 @@ void NeuropixelsOpenEphysIMECInterface::writeToSocket(const std::string& message
  * @return
  */
 std::string NeuropixelsOpenEphysIMECInterface::readFromSocket() {
-    SOCKET ClientSocket = INVALID_SOCKET;
-
-    // Accept a client socket
-    ClientSocket = accept(ListenSocket, NULL, NULL);
-    if (ClientSocket == INVALID_SOCKET) {
-        closesocket(ListenSocket);
-        WSACleanup();
-        return "Error accepting connection";
+    // Assuming serverIPAddress and serverPort are already set
+    WSADATA wsaData;
+    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (iResult != 0) {
+        std::cout << "\nWSAStartup failed.";
+        return "WSAStartup failed";
     }
 
-    // Receive data until the client shuts down the connection
+    struct addrinfo *result = NULL, *ptr = NULL, hints;
+    ZeroMemory(&hints, sizeof(hints));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
+
+    // Resolve the server address and port
+    iResult = getaddrinfo(serverIPAddress.c_str(), std::to_string(serverPort).c_str(), &hints, &result);
+    if (iResult != 0) {
+        WSACleanup();
+        std::cout << "\ngetaddrinfo failed.";
+        return "getaddrinfo failed";
+    }
+
+    SOCKET ClientSocket = INVALID_SOCKET;
+    ptr = result;
+
+    // Attempt to connect to the first address returned by the call to getaddrinfo
+    ClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+    if (ClientSocket == INVALID_SOCKET) {
+        freeaddrinfo(result);
+        WSACleanup();
+        std::cout << "\nError at socket().";
+        return "Error at socket()";
+    }
+
+    // Connect to server
+    iResult = ::connect(ClientSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+    if (iResult == SOCKET_ERROR) {
+        closesocket(ClientSocket);
+        ClientSocket = INVALID_SOCKET;
+    }
+
+    freeaddrinfo(result);
+
+    if (ClientSocket == INVALID_SOCKET) {
+        WSACleanup();
+        std::cout << "\nUnable to connect to server.";
+        return "Unable to connect to server";
+    }
+
     char recvbuf[512];
-    int iResult, recvbuflen = 512;
+    int recvbuflen = 512;
     std::string receivedMsg;
 
+    // Receive until the peer closes the connection
     do {
         iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
             receivedMsg = std::string(recvbuf, iResult);
+            std::cout << "\nBytes received: " << iResult;
+
+            // Exit the application if 'exit' message is received
             if (receivedMsg == "exit") {
-                QCoreApplication::quit(); // Exit the Qt application
+                QCoreApplication::quit();
                 break;
             }
-            // Handle other messages if needed
-        } else if (iResult == 0) {
-            // Connection closing...
-        } else {
-            // Error in recv
         }
+        else if (iResult == 0)
+            std::cout << "\nConnection closed";
+        else
+            std::cout << "\nrecv failed: " << WSAGetLastError();
     } while (iResult > 0);
-
-    // Shutdown the connection since we're done
-    iResult = shutdown(ClientSocket, SD_SEND);
-    if (iResult == SOCKET_ERROR) {
-        closesocket(ClientSocket);
-        WSACleanup();
-        return "Error in shutdown";
-    }
 
     // Cleanup
     closesocket(ClientSocket);
-    return receivedMsg; // Return the received message
+    WSACleanup();
+
+    return receivedMsg;
 }
+
 
 /**
  * @brief NeuropixelsOpenEphysIMECInterface::readFromSharedMemory
  */
 void NeuropixelsOpenEphysIMECInterface::readFromSharedMemory() {
     // Implement shared memory read logic
+    std::cout << "\nShared memory read thread instantiated";
 }
 
 
 void NeuropixelsOpenEphysIMECInterface::processData() {
-    // Implementation of processData
-    // ...
-    while (true) {
-        std::string message = readFromSocket();
-        // Process the message
-        // Read from shared memory if necessary
-    }
+
+    // Thread for reading from socket
+    QThread* socketThread = QThread::create([this]{
+        this->readFromSocket();
+    });
+
+    // Thread for reading from shared memory
+    QThread* sharedMemoryThread = QThread::create([this]{
+        this->readFromSharedMemory();
+    });
+
+    // Connect thread finished signals to delete them after execution
+    connect(socketThread, &QThread::finished, socketThread, &QThread::deleteLater);
+    connect(sharedMemoryThread, &QThread::finished, sharedMemoryThread, &QThread::deleteLater);
+
+    // Start the threads
+    socketThread->start();
+    sharedMemoryThread->start();
 }
 
-// Additional methods specific to Neuropixels and IMEC can be implemented here
