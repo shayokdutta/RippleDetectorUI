@@ -4,27 +4,27 @@
 #include <QCoreApplication>
 #include <QThread>
 
+#ifdef _WIN32 // NeuropixelsOpenEphysIMECInterface**********************************
 /**
  * @brief NeuropixelsOpenEphysIMECInterface::NeuropixelsOpenEphysIMECInterface
  * @param port
  * @param sharedMemName
  * @param IPAddr
  */
-NeuropixelsOpenEphysIMECInterface::NeuropixelsOpenEphysIMECInterface(int port, const std::string& sharedMemName, std::string& IPAddr)
+NeuropixelsOpenEphysIMECInterface::NeuropixelsOpenEphysIMECInterface(
+    int port, const std::string& sharedMemName, std::string& IPAddr)
     : DataInterface(port, sharedMemName, IPAddr) {
 
     // open socket **********************************************************
     // Creating Messaging socket as a client
-    std::cout << "\nCreating Messaging socket.";
+    ConnectSocket = INVALID_SOCKET;
+    std::cout << "[RippleDetectorUIApp] Creating Messaging socket."<<std::endl;
     WSADATA wsaData;
     int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0) {
-        // Handle error
+        printf("[RippleDetectorUIApp] WSAStartup failed with error: %d\n", iResult);
         return;
     }
-
-    struct addrinfo hints;
-    struct addrinfo *result = NULL;
 
     ZeroMemory(&hints, sizeof(hints));
     hints.ai_family = AF_INET;
@@ -34,35 +34,45 @@ NeuropixelsOpenEphysIMECInterface::NeuropixelsOpenEphysIMECInterface(int port, c
     // Resolve the server address and port
     iResult = getaddrinfo(serverIPAddress.c_str(), std::to_string(serverPort).c_str(), &hints, &result);
     if (iResult != 0) {
-        std::cout << "\nError resolving server address and port.";
+        std::cout << "[RippleDetectorUIApp] Error resolving server address and port."<<std::endl;
         WSACleanup();
         return;
     }
 
-    // Create a socket for connecting to server
-    SOCKET ConnectSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
-    if (ConnectSocket == INVALID_SOCKET) {
-        freeaddrinfo(result);
-        WSACleanup();
-        std::cout << "\nError creating socket to connect to server.";
-        return;
-    }
+    // Attempt to connect to an address until one succeeds
+    for(ptr=result; ptr!=NULL; ptr=ptr->ai_next){
+        // Create a socket for connecting to server
+        ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+        if (ConnectSocket == INVALID_SOCKET) {
+            //freeaddrinfo(result);
+            WSACleanup();
+            std::cout << "[RippleDetectorUIApp] Error creating socket to connect to server."<<std::endl;
+            return;
+        }
 
-    // Connect to the server
-    iResult = ::connect(ConnectSocket, result->ai_addr, (int)result->ai_addrlen); // winsock api connect function
-    if (iResult == SOCKET_ERROR) {
-        closesocket(ConnectSocket);
-        freeaddrinfo(result);
-        WSACleanup();
-        std::cout << "\nError connecting to server.";
-        return;
+        // Connect to the server
+        iResult = ::connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen); // winsock api connect function
+        if (iResult == SOCKET_ERROR) {
+            closesocket(ConnectSocket);
+            ConnectSocket = INVALID_SOCKET;
+            std::cout << "[RippleDetectorUIApp] Error connecting to server."<<std::endl;
+            continue;
+        }
+        break;
     }
 
     freeaddrinfo(result);
-    std::cout << "\nConnected to messaging server!";
+
+    if (ConnectSocket == INVALID_SOCKET) {
+        printf("[RippleDetectorUIApp] Unable to connect to server!\n");
+        WSACleanup();
+        return;
+    }
+
+    std::cout << "[RippleDetectorUIApp] Connected to messaging server!"<<std::endl;
 
     // Open the shared memory **********************************************************
-    std::cout << "\nCreating sharedmemory map.";
+    std::cout << "[RippleDetectorUIApp] Creating sharedmemory map."<<std::endl;
     hMapFile = OpenFileMappingW(
         FILE_MAP_READ,   // Read access
         FALSE,           // Do not inherit the name
@@ -85,8 +95,7 @@ NeuropixelsOpenEphysIMECInterface::NeuropixelsOpenEphysIMECInterface(int port, c
         // Handle error
     }
 
-    std::cout << "\nSharedMemoryFile opened!";
-    // Additional initialization code...
+    std::cout << "[RippleDetectorUIApp] SharedMemoryFile opened!"<<std::endl;
 }
 
 /**
@@ -94,14 +103,14 @@ NeuropixelsOpenEphysIMECInterface::NeuropixelsOpenEphysIMECInterface(int port, c
  */
 NeuropixelsOpenEphysIMECInterface::~NeuropixelsOpenEphysIMECInterface() {
     // Close the listening socket
-    if (ListenSocket != INVALID_SOCKET) {
-        closesocket(ListenSocket);
+    if (ConnectSocket != INVALID_SOCKET) {
+        closesocket(ConnectSocket);
     }
 
     // Clean up Winsock
     WSACleanup();
 
-    std::cout << "\nMessage receiving socket closed!";
+    std::cout << "[RippleDetectorUIApp] Message receiving socket closed!"<<std::endl;
 
     // Unmap the shared memory
     if (lpSharedMemory != NULL) {
@@ -112,101 +121,95 @@ NeuropixelsOpenEphysIMECInterface::~NeuropixelsOpenEphysIMECInterface() {
     if (hMapFile != NULL) {
         CloseHandle(hMapFile);
     }
-    std::cout << "\nSharedMemoryFile closed!";
-
-    // Additional cleanup code...
+    std::cout << "[RippleDetectorUIApp] SharedMemoryFile closed!"<<std::endl;
 }
 
 /**
  * @brief NeuropixelsOpenEphysIMECInterface::writeToSocket
- *  when  might this even be needed?
  * @param message
  */
-void NeuropixelsOpenEphysIMECInterface::writeToSocket(const std::string& message) {
-    // Implement socket write logic
+void NeuropixelsOpenEphysIMECInterface::writeToSocket(const std::string& msg) {
+    int iResult = send(ConnectSocket, msg.c_str(), (int)strlen(msg.c_str()), 0);
+    if (iResult == SOCKET_ERROR) {
+        std::cout << "[RippleDetectorUIApp] Error: Sending message failed. Error code: " + std::to_string(WSAGetLastError());
+        closesocket(ConnectSocket);
+        WSACleanup();
+        return;
+    }
+    else {
+        std::cout << "[RippleDetectorUIApp] Message sent successfully" << std::endl;
+    }
 }
+
+/**
+ * @brief toLowerCase: Function to convert string to lower case.
+ * @param str
+ * @return
+ */
+std::string toLowerCase(const std::string& str) {
+    std::string lowerStr = str;
+    std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), ::tolower);
+    return lowerStr;
+}
+
 
 /**
  * @brief NeuropixelsOpenEphysIMECInterface::readFromSocket
  * @return
  */
 std::string NeuropixelsOpenEphysIMECInterface::readFromSocket() {
-    // Assuming serverIPAddress and serverPort are already set
-    WSADATA wsaData;
-    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (iResult != 0) {
-        std::cout << "\nWSAStartup failed.";
-        return "WSAStartup failed";
-    }
 
-    struct addrinfo *result = NULL, *ptr = NULL, hints;
-    ZeroMemory(&hints, sizeof(hints));
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_protocol = IPPROTO_TCP;
-
-    // Resolve the server address and port
-    iResult = getaddrinfo(serverIPAddress.c_str(), std::to_string(serverPort).c_str(), &hints, &result);
-    if (iResult != 0) {
+    if (ConnectSocket == INVALID_SOCKET) {
         WSACleanup();
-        std::cout << "\ngetaddrinfo failed.";
-        return "getaddrinfo failed";
-    }
-
-    SOCKET ClientSocket = INVALID_SOCKET;
-    ptr = result;
-
-    // Attempt to connect to the first address returned by the call to getaddrinfo
-    ClientSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
-    if (ClientSocket == INVALID_SOCKET) {
-        freeaddrinfo(result);
-        WSACleanup();
-        std::cout << "\nError at socket().";
-        return "Error at socket()";
-    }
-
-    // Connect to server
-    iResult = ::connect(ClientSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
-    if (iResult == SOCKET_ERROR) {
-        closesocket(ClientSocket);
-        ClientSocket = INVALID_SOCKET;
-    }
-
-    freeaddrinfo(result);
-
-    if (ClientSocket == INVALID_SOCKET) {
-        WSACleanup();
-        std::cout << "\nUnable to connect to server.";
+        std::cout << "[RippleDetectorUIApp] Unable to connect to server."<<std::endl;
         return "Unable to connect to server";
     }
 
     char recvbuf[512];
     int recvbuflen = 512;
     std::string receivedMsg;
+    int iResult;
+
+    std::cout << "[RippleDetectorUIApp] Socket read thread instantiated at "  + serverIPAddress + ":" + std::to_string(serverPort) <<std::endl;
 
     // Receive until the peer closes the connection
     do {
-        iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
+        iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
-            receivedMsg = std::string(recvbuf, iResult);
-            std::cout << "\nBytes received: " << iResult;
+
+            receivedMsg = toLowerCase(std::string(recvbuf, iResult));
+            std::cout << "[RippleDetectorUIApp] Msg received: " << receivedMsg << std::endl;
+
 
             // Exit the application if 'exit' message is received
             if (receivedMsg == "exit") {
+                writeToSocket("exit"); // let the socket know we're also exiting so it stops listening thread.
                 QCoreApplication::quit();
                 break;
             }
+
+            if(receivedMsg == "pause"){
+                // pause data acq
+            }
+            else if(receivedMsg == "resume" || receivedMsg == "start"){
+                // resume data acq
+            }
+            else{
+                std::cout <<"[RippleDetectorUIApp] I don't know this request :P : " << receivedMsg<<std::endl;
+            }
+
         }
         else if (iResult == 0)
-            std::cout << "\nConnection closed";
+            std::cout << "[RippleDetectorUIApp] Connection closed"<<std::endl;
         else
-            std::cout << "\nrecv failed: " << WSAGetLastError();
+            std::cout << "[RippleDetectorUIApp] recv failed: " << WSAGetLastError()<<std::endl;
     } while (iResult > 0);
 
     // Cleanup
-    closesocket(ClientSocket);
+    closesocket(ConnectSocket);
     WSACleanup();
 
+    std::cout << "[RippleDetectorUIApp] Socket read thread returning..." <<std::endl;
     return receivedMsg;
 }
 
@@ -216,10 +219,15 @@ std::string NeuropixelsOpenEphysIMECInterface::readFromSocket() {
  */
 void NeuropixelsOpenEphysIMECInterface::readFromSharedMemory() {
     // Implement shared memory read logic
-    std::cout << "\nShared memory read thread instantiated";
+    std::cout << "[RippleDetectorUIApp] Shared memory read thread instantiated"<<std::endl;
+
+    std::cout << "[RippleDetectorUIApp] Shared memory read thread returning..."<<std::endl;
 }
 
 
+/**
+ * @brief NeuropixelsOpenEphysIMECInterface::processData
+ */
 void NeuropixelsOpenEphysIMECInterface::processData() {
 
     // Thread for reading from socket
@@ -240,4 +248,4 @@ void NeuropixelsOpenEphysIMECInterface::processData() {
     socketThread->start();
     sharedMemoryThread->start();
 }
-
+#endif

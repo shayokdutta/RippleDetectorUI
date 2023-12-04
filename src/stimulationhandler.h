@@ -3,11 +3,12 @@
 
 #include <QObject>
 #include "channelselection.h"
+#include "datainterface.h"
 
 class StimulationHandler : public QObject{
     Q_OBJECT
 public:
-    StimulationHandler(ChannelSelection *chanSelect,QObject *parent = nullptr);
+    StimulationHandler(ChannelSelection *chanSelect, DataInterface *dataInterface, QObject *parent = nullptr);
 
     // this should just be spawning all ripple detectors that are necessary
     void spawnRippleDetectors();
@@ -21,8 +22,8 @@ public slots:
 
 private:
     ChannelSelection* dataChan;
+    DataInterface* dataInterfacePtr;
     // rippleDetectors
-    // RPi Interface
 
     // all of these functions should do similar things just unpack the data properly then
     // call rippledetectors to handle things then send it back to the handleData() function

@@ -45,7 +45,7 @@ public:
     NeuropixelsOpenEphysIMECInterface(int port, const std::string& sharedMemName, std::string& IPAddr);
     ~NeuropixelsOpenEphysIMECInterface() override;
 
-    void writeToSocket(const std::string& message) override;
+    void writeToSocket(const std::string& msg) override;
     std::string readFromSocket() override;
     void readFromSharedMemory() override;
 
@@ -55,7 +55,11 @@ public slots:
            void processData() override;
 
 private: // Private members specific to Neuropixels/IMEC interface
-    SOCKET ListenSocket; // Socket for listening to incoming connections
+    SOCKET ConnectSocket;
+    struct addrinfo *result = NULL,
+                    *ptr = NULL,
+                    hints;
+
 
     HANDLE hMapFile; // Handle for the shared memory
     LPVOID lpSharedMemory; // Pointer to the mapped shared memory

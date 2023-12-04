@@ -3,8 +3,14 @@
 #include <QQmlContext>
 #include <cstdlib>
 #include <iostream>
-#include <fstream>
 #include <string.h>
+
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <windows.h>
+#endif
+
 
 #include "app_environment.h"
 #include "import_qml_components_plugins.h"
@@ -15,23 +21,26 @@
 
 int main(int argc, char *argv[])
 {
-    std::ofstream out("rippleDetectorOutput.txt");
-    std::streambuf *coutbuf = std::cout.rdbuf(); // Save old buf
-    std::cout.rdbuf(out.rdbuf()); // Redirect std::cout to output.txt
-    std::cout << "We're in!"<<std::endl;
+
+#ifdef _WIN32
+    if (AttachConsole(ATTACH_PARENT_PROCESS)) {
+        FILE* fp;
+        freopen_s(&fp, "CONOUT$", "w", stdout);
+        freopen_s(&fp, "CONIN$", "r", stdin);
+    }
+#endif
+
+
+    std::cout << "[RippleDetectorUIApp] We're in!"<<std::endl;
     set_qt_environment();
 
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
 
-    ChannelSelection channelSelection;
+    ChannelSelection channelSelection; DataInterface* dataInterfacePtr = NULL;
 
-    DataInterface* dataInterfacePtr = NULL;
-
-    StimulationHandler stimHandler(&channelSelection);
-
-
+    StimulationHandler stimHandler(&channelSelection, dataInterfacePtr);
 
     // Expose the ChannelSelection model to QML
     engine.rootContext()->setContextProperty("channelSelectionModel", channelSelection.getProbeChannelsModel());
@@ -68,15 +77,17 @@ int main(int argc, char *argv[])
         serverIPAddress = argv[4];
         serverPort = std::atoi(argv[5]);
 
-        std::cout << "numChannels: " << totalRows;
-        std::cout << "\nsharedMemoryName: " << sharedMemoryName;
-        std::cout << "\nserverIPAddress: " << serverIPAddress;
-        std::cout << "\nserverPort: " << serverPort;
+        std::cout << "[RippleDetectorUIApp] numChannels: " << totalRows<<std::endl;
+        std::cout << "[RippleDetectorUIApp] sharedMemoryName: " << sharedMemoryName<<std::endl;
+        std::cout << "[RippleDetectorUIApp] serverIPAddress: " << serverIPAddress<<std::endl;
+        std::cout << "[RippleDetectorUIApp] serverPort: " << serverPort<<std::endl;
 
         if(std::strcmp("WindowsOpenEphysIMECNPXIe",argv[1])==0){
+            #ifdef _WIN32
             dataInterfacePtr = new NeuropixelsOpenEphysIMECInterface(serverPort, sharedMemoryName, serverIPAddress);
             // Start processing data (listening to socket and reading from shared memory)
             static_cast<NeuropixelsOpenEphysIMECInterface*>(dataInterfacePtr)->processData();
+            #endif
         }
 
         if (totalRows <= 0) {

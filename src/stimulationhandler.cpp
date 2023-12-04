@@ -5,9 +5,11 @@
  * @param chanSelect
  * @param parent
  */
-StimulationHandler::StimulationHandler(ChannelSelection *chanSelect, QObject *parent):
-    dataChan(chanSelect), QObject(parent){
+StimulationHandler::StimulationHandler(ChannelSelection *chanSelect, DataInterface *dataInterface, QObject *parent):
+    dataChan(chanSelect), dataInterfacePtr(dataInterface), QObject(parent){
+
     connect(dataChan, &ChannelSelection::sendData, this, &StimulationHandler::handleData);
+
 }
 
 void StimulationHandler::handleData(){
