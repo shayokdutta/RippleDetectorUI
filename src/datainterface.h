@@ -22,6 +22,7 @@ public:
 
     virtual void writeToSocket(const std::string& message) = 0;
     virtual std::string readFromSocket() = 0;
+    virtual void writeToSharedMemory(const std::string& message) = 0;
     virtual void readFromSharedMemory() = 0;
 
 public slots:
@@ -47,6 +48,7 @@ public:
 
     void writeToSocket(const std::string& msg) override;
     std::string readFromSocket() override;
+    void writeToSharedMemory(const std::string& message) override;
     void readFromSharedMemory() override;
 
     // Additional methods specific to Neuropixels/IMEC can be added here

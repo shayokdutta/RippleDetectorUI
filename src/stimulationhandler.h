@@ -19,6 +19,8 @@ public:
 
 public slots:
     void handleData(/*dataType, dataPacket*/); // receives data from ChannelSelection object
+    void sendChannels(QVector <int> channels);
+    void sendSocketMessage(std::string msg);
 
 private:
     ChannelSelection* dataChan;

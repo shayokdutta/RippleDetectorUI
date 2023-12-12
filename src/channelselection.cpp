@@ -5,7 +5,7 @@
  * @param parent
  */
 ChannelDataTable::ChannelDataTable(QObject *parent)
-    : QAbstractTableModel(parent), numColumns(5), numRows(1) // Assuming you want 5 columns and at least 1 row initially
+    : QAbstractTableModel(parent), numColumns(5), numRows(1), FDChan(-1) // Assuming you want 5 columns and at least 1 row initially
 {
     // Initialize the first row with headers
     rows.append({"Channel", "μ", "σ", "RD?", "FD?"});
@@ -39,7 +39,7 @@ void ChannelDataTable::restoreChannels() {
 
     // Optionally, emit dataChanged for the entire model to update the view
     emit dataChanged(createIndex(0, 0), createIndex(numRows - 1, numColumns - 1));
-    emit channelsUpdated();
+    emit channelsUpdated(false);
 }
 
 /**
@@ -86,14 +86,29 @@ void ChannelDataTable::setChannels() {
 
     if (RDChans.isEmpty()) {
         qDebug() << "NO CHANNELS SELECTED?";
+        restoreChannels();
+        return;
     }
     if (FDChan != -1) {
         qDebug() << "False Detection Channel Set to " + QString::number(FDChan);
     }
-    emit channelsUpdated();  // Assuming you have declared this signal
+    emit channelsUpdated(true);  // Assuming you have declared this signal
 
     // Update the row count
     numRows = rows.count();
+}
+
+/**
+ * @brief ChannelDataTable::fdChanSet
+ * @return
+ */
+bool ChannelDataTable::fdChanSet(){
+    if(FDChan != -1){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 /**
@@ -249,6 +264,20 @@ void ChannelDataTable::addRow(const QList<QVariant> &rowData)
 }
 
 /**
+ * @brief ChannelDataTable::getChannelsToSend
+ * @return
+ */
+QVector<int> ChannelDataTable::getChannelsToSend(){
+    QVector<int> allChans(RDChans);
+
+    if(FDChan != -1){
+        allChans.append(FDChan);
+    }
+
+    return allChans;
+}
+
+/**
  * @brief ChannelDataTable::roleNames
  * @return
  */
@@ -280,6 +309,7 @@ ChannelSelection::~ChannelSelection(){
 /**
  * @brief ChannelSelection::updateChannels
  */
-void ChannelSelection::updateChannels(){
-    channelsSet = !channelsSet; // flip it every time. Should be false first.
+void ChannelSelection::updateChannels(bool channelsSetOrNah){
+    channelsSet = channelsSetOrNah;
+    emit theseChannels(probeChannels->getChannelsToSend());
 }

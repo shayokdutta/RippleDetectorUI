@@ -224,6 +224,22 @@ void NeuropixelsOpenEphysIMECInterface::readFromSharedMemory() {
     std::cout << "[RippleDetectorUIApp] Shared memory read thread returning..."<<std::endl;
 }
 
+/**
+ * @brief writeToSharedMemory
+ * @param message
+ */
+void NeuropixelsOpenEphysIMECInterface::writeToSharedMemory(const std::string& message){
+    // Ensure the message size does not exceed the buffer size
+    if (message.size() < (385 * MAXPACKETS)) {
+        // Copy the message to the shared memory
+        std::memcpy(lpSharedMemory, message.c_str(), message.size());
+        // Clear the rest of the buffer. This is probably redundant but alas anything being written
+        // from this client end should clear and reset the buffer
+        std::memset(static_cast<char*>(lpSharedMemory) + message.size(), 0, (385 * MAXPACKETS) - message.size());
+    } else {
+        std::cerr << "[RippleDetectorUIApp] Error: Message size exceeds shared memory buffer size." << std::endl;
+    }
+}
 
 /**
  * @brief NeuropixelsOpenEphysIMECInterface::processData
